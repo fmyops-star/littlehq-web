@@ -27,7 +27,7 @@
 
   function isValidEmail(value) {
     const email = normalizedEmail(value);
-    return emailPattern.test(email) && !email.includes("..");
+    return emailPattern.test(email) && !email.includes("..") && !email.includes(":");
   }
 
   function isValidPassword(value) {
@@ -61,6 +61,189 @@
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
+  async function requestPasswordReset(email) {
+    const { supabaseUrl, supabaseAnonKey } = config();
+    const response = await fetch(`${supabaseUrl}/functions/v1/request-password-reset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`
+      },
+      body: JSON.stringify({ email })
+    });
+    if (!response.ok) {
+      throw new Error("request_failed");
+    }
+  }
+
+  async function startResetPage() {
+    const params = query();
+    const hashParams = hash();
+    const type = (params.get("type") || hashParams.get("type") || "").toLowerCase();
+    const tokenHash = params.get("token_hash") || hashParams.get("token_hash");
+    const code = params.get("code");
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+
+    function showRequest() { show("request"); }
+    function showPassword() { show("password"); }
+    function showDone() { show("done"); }
+    function showConfirmed() { show("confirmed"); }
+
+    try {
+      if (tokenHash && (type === "recovery" || type === "signup" || type === "email")) {
+        const supabase = client();
+        const { error } = await supabase.auth.verifyOtp({
+          type: type === "email" ? "email" : type,
+          token_hash: tokenHash
+        });
+        clearAddress();
+        if (error) {
+          showRequest();
+          setNotice("request-notice", "That link is no longer valid. Send a new reset email.", true);
+        } else if (type === "signup" || type === "email") {
+          showConfirmed();
+        } else {
+          showPassword();
+        }
+      } else if (accessToken && (type === "recovery" || hashParams.get("type") === "recovery")) {
+        const supabase = client();
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || ""
+        });
+        clearAddress();
+        if (error) {
+          showRequest();
+          setNotice("request-notice", "That link is no longer valid. Send a new reset email.", true);
+        } else {
+          showPassword();
+        }
+      } else if (code) {
+        const supabase = client();
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        clearAddress();
+        if (error) {
+          showRequest();
+          setNotice("request-notice", "Open the latest reset email, or send a new one from this page.", true);
+        } else if (type === "signup") {
+          showConfirmed();
+        } else {
+          showPassword();
+        }
+      } else {
+        showRequest();
+      }
+
+      const requestForm = document.getElementById("request-form");
+      const requestEmail = document.getElementById("request-email");
+      const requestHint = document.getElementById("request-email-hint");
+      requestEmail.addEventListener("input", function () {
+        const value = normalizedEmail(requestEmail.value);
+        if (value !== requestEmail.value) requestEmail.value = value;
+        const invalid = value.length > 0 && !isValidEmail(value);
+        requestHint.classList.toggle("hidden", !invalid);
+      });
+      requestForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const email = normalizedEmail(requestEmail.value);
+        if (!isValidEmail(email)) {
+          requestHint.classList.remove("hidden");
+          return;
+        }
+        const button = document.getElementById("request-submit");
+        button.disabled = true;
+        try {
+          await requestPasswordReset(email);
+          setNotice(
+            "request-notice",
+            "If that email belongs to a LittleHQ account, you’ll receive reset instructions shortly.",
+            false
+          );
+        } catch (error) {
+          setNotice("request-notice", "Couldn’t send that email. Try again.", true);
+        }
+        button.disabled = false;
+      });
+
+      document.getElementById("password-form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const password = document.getElementById("new-password").value;
+        const confirm = document.getElementById("confirm-password").value;
+        if (!isValidPassword(password)) {
+          setNotice("password-notice", "Use at least 8 characters.", true);
+          return;
+        }
+        if (password !== confirm) {
+          setNotice("password-notice", "Passwords don’t match.", true);
+          return;
+        }
+        const button = document.getElementById("password-submit");
+        button.disabled = true;
+        try {
+          const supabase = client();
+          const { error } = await supabase.auth.updateUser({ password });
+          if (error) {
+            setNotice("password-notice", "We couldn’t update the password. Request a new reset email.", true);
+            button.disabled = false;
+            return;
+          }
+          await supabase.auth.signOut();
+          showDone();
+        } catch (error) {
+          setNotice("password-notice", "We couldn’t update the password. Request a new reset email.", true);
+          button.disabled = false;
+        }
+      });
+    } catch (error) {
+      showRequest();
+      setNotice("request-notice", "This page isn’t ready yet.", true);
+    }
+  }
+
+  async function startConfirmedPage() {
+    const params = query();
+    const hashParams = hash();
+    const type = (params.get("type") || hashParams.get("type") || "signup").toLowerCase();
+    const tokenHash = params.get("token_hash") || hashParams.get("token_hash");
+    const code = params.get("code");
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+    try {
+      if (tokenHash) {
+        const supabase = client();
+        const { error } = await supabase.auth.verifyOtp({
+          type: type === "email" ? "email" : "signup",
+          token_hash: tokenHash
+        });
+        clearAddress();
+        show(error ? "failed" : "done");
+        return;
+      }
+      if (accessToken) {
+        const supabase = client();
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || ""
+        });
+        clearAddress();
+        show(error ? "failed" : "done");
+        return;
+      }
+      if (code) {
+        const supabase = client();
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        clearAddress();
+        show(error ? "failed" : "done");
+        return;
+      }
+      show("waiting");
+    } catch (error) {
+      show("failed");
+    }
+  }
+
   window.LittleHQWeb = {
     client,
     normalizedEmail,
@@ -70,6 +253,9 @@
     setNotice,
     query,
     hash,
-    clearAddress
+    clearAddress,
+    requestPasswordReset,
+    startResetPage,
+    startConfirmedPage
   };
 })();
