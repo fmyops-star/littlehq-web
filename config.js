@@ -1,0 +1,4 @@
+window.LITTLEHQ_CONFIG = {
+  supabaseUrl: "https://qpvwzxyzpsioqqhtubkl.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFwdnd6eHl6cHNpb3FxaHR1YmtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MzY5ODQsImV4cCI6MjEwMjMxMjk4NH0.X3ABA2uJKgefbQgau7FnfbG3yI-1vTdxSf_E_svW034"
+};
