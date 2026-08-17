@@ -1,3 +1,3 @@
 # LittleHQ auth pages
 
-Static pages for email confirmation and password reset. Opened from LittleHQ auth emails.
+Static pages for email confirmation, password reset, and invitation links. Opened from LittleHQ emails.

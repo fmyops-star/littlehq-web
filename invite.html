@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; connect-src https://*.supabase.co; img-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <title>Invitation · LittleHQ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <div class="mark" aria-hidden="true">LH</div>
+    <h1>You’re invited</h1>
+    <section id="loading" data-panel>
+      <p class="lead">Opening LittleHQ…</p>
+    </section>
+    <section id="ready" data-panel class="hidden">
+      <p class="lead" id="ready-lead">This invitation is for the inbox it was sent to. Open LittleHQ to continue. You won’t need to type a code.</p>
+      <a class="button" id="open-app" href="#">Open LittleHQ</a>
+    </section>
+    <section id="failed" data-panel class="hidden">
+      <p class="lead">That invitation link is no longer valid. Ask the Director to send a new one, or open LittleHQ and paste the backup code from the email.</p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script src="invite.js"></script>
+</body>
+</html>

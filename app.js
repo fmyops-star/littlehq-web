@@ -202,6 +202,48 @@
     }
   }
 
+  function normalizedInviteToken(value) {
+    return String(value || "").replace(/[\s-]/g, "").toLowerCase();
+  }
+
+  function isValidInviteToken(value) {
+    const token = normalizedInviteToken(value);
+    return token.length >= 8 && token.length <= 256 && /^[a-z0-9._~-]+$/.test(token);
+  }
+
+  function appInviteURL(token) {
+    return `littlehq://invite?token=${encodeURIComponent(token)}`;
+  }
+
+  async function startInvitePage() {
+    const params = query();
+    const token = normalizedInviteToken(params.get("token"));
+    clearAddress();
+    if (!isValidInviteToken(token)) {
+      show("failed");
+      return;
+    }
+    try {
+      const supabase = client();
+      const { data, error } = await supabase.rpc("peek_invitation", { p_token: token });
+      const row = Array.isArray(data) ? data[0] : data;
+      const role = String(row && row.role ? row.role : "").toLowerCase();
+      if (error || (role !== "teacher" && role !== "parent")) {
+        show("failed");
+        return;
+      }
+      const headline = role === "teacher" ? "Welcome, teacher!" : "Welcome, parent!";
+      document.querySelector("h1").textContent = headline;
+      const open = document.getElementById("open-app");
+      const href = appInviteURL(token);
+      open.setAttribute("href", href);
+      show("ready");
+      window.location.href = href;
+    } catch (error) {
+      show("failed");
+    }
+  }
+
   async function startConfirmedPage() {
     const params = query();
     const hashParams = hash();
@@ -256,6 +298,7 @@
     clearAddress,
     requestPasswordReset,
     startResetPage,
+    startInvitePage,
     startConfirmedPage
   };
 })();
