@@ -34,6 +34,11 @@
     return String(value || "").length >= 8;
   }
 
+  function isValidName(value) {
+    const name = String(value || "").trim();
+    return name.length >= 1 && name.length <= 80 && !/[\r\n]/.test(name);
+  }
+
   function show(id) {
     document.querySelectorAll("[data-panel]").forEach((node) => {
       node.classList.toggle("hidden", node.id !== id);
@@ -215,10 +220,12 @@
     return `littlehq://invite?token=${encodeURIComponent(token)}`;
   }
 
-  async function confirmInvitation(token, password) {
+  async function confirmInvitation(token, password, firstName, lastName) {
     const { supabaseUrl, supabaseAnonKey } = config();
     const body = { token };
     if (password) body.password = password;
+    if (firstName) body.first_name = firstName;
+    if (lastName) body.last_name = lastName;
     const response = await fetch(`${supabaseUrl}/functions/v1/confirm-invitation`, {
       method: "POST",
       headers: {
@@ -270,8 +277,14 @@
         show("password");
         document.getElementById("password-form").addEventListener("submit", async function (event) {
           event.preventDefault();
+          const firstName = document.getElementById("first-name").value.trim();
+          const lastName = document.getElementById("last-name").value.trim();
           const password = document.getElementById("new-password").value;
           const confirm = document.getElementById("confirm-password").value;
+          if (!isValidName(firstName) || !isValidName(lastName)) {
+            setNotice("password-notice", "Enter your first and last name.", true);
+            return;
+          }
           if (!isValidPassword(password)) {
             setNotice("password-notice", "Use at least 8 characters.", true);
             return;
@@ -283,7 +296,7 @@
           const button = document.getElementById("password-submit");
           button.disabled = true;
           try {
-            const created = await confirmInvitation(token, password);
+            const created = await confirmInvitation(token, password, firstName, lastName);
             if (!created || created.needs_password) {
               setNotice("password-notice", "Couldn’t confirm that email. Try again.", true);
               button.disabled = false;

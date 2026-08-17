@@ -16,14 +16,18 @@
       <p class="lead">Confirming your email…</p>
     </section>
     <section id="password" data-panel class="hidden">
-      <p class="lead">Your invitation is valid. Create a password for this inbox, then open LittleHQ.</p>
+      <p class="lead">Your email is confirmed. Create your LittleHQ account, then open the app.</p>
       <form id="password-form">
+        <label for="first-name">First name</label>
+        <input id="first-name" type="text" autocomplete="given-name" maxlength="80" required>
+        <label for="last-name">Last name</label>
+        <input id="last-name" type="text" autocomplete="family-name" maxlength="80" required>
         <label for="new-password">Password</label>
         <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
         <label for="confirm-password">Confirm password</label>
         <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
         <p id="password-notice" class="notice hidden"></p>
-        <button id="password-submit" type="submit">Confirm email</button>
+        <button id="password-submit" type="submit">Create Account</button>
       </form>
     </section>
     <section id="ready" data-panel class="hidden">
