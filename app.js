@@ -215,6 +215,36 @@
     return `littlehq://invite?token=${encodeURIComponent(token)}`;
   }
 
+  async function confirmInvitation(token, password) {
+    const { supabaseUrl, supabaseAnonKey } = config();
+    const body = { token };
+    if (password) body.password = password;
+    const response = await fetch(`${supabaseUrl}/functions/v1/confirm-invitation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseAnonKey,
+        Authorization: `Bearer ${supabaseAnonKey}`
+      },
+      body: JSON.stringify(body)
+    });
+    if (!response.ok) {
+      throw new Error("request_failed");
+    }
+    return response.json();
+  }
+
+  function showOpenApp(token, created) {
+    const open = document.getElementById("open-app");
+    const href = appInviteURL(token);
+    open.setAttribute("href", href);
+    const lead = document.getElementById("ready-lead");
+    lead.textContent = created
+      ? "Your email is confirmed. Open LittleHQ and sign in with this inbox and the password you just created."
+      : "Your email is confirmed. Open LittleHQ and sign in with this inbox.";
+    show("ready");
+  }
+
   async function startInvitePage() {
     const params = query();
     const token = normalizedInviteToken(params.get("token"));
@@ -232,13 +262,46 @@
         show("failed");
         return;
       }
-      const headline = role === "teacher" ? "Welcome, teacher!" : "Welcome, parent!";
-      document.querySelector("h1").textContent = headline;
-      const open = document.getElementById("open-app");
-      const href = appInviteURL(token);
-      open.setAttribute("href", href);
-      show("ready");
-      window.location.href = href;
+      document.querySelector("h1").textContent = role === "teacher"
+        ? "Welcome, teacher!"
+        : "Welcome, parent!";
+      const result = await confirmInvitation(token);
+      if (result && result.needs_password) {
+        show("password");
+        document.getElementById("password-form").addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const password = document.getElementById("new-password").value;
+          const confirm = document.getElementById("confirm-password").value;
+          if (!isValidPassword(password)) {
+            setNotice("password-notice", "Use at least 8 characters.", true);
+            return;
+          }
+          if (password !== confirm) {
+            setNotice("password-notice", "Passwords don’t match.", true);
+            return;
+          }
+          const button = document.getElementById("password-submit");
+          button.disabled = true;
+          try {
+            const created = await confirmInvitation(token, password);
+            if (!created || created.needs_password) {
+              setNotice("password-notice", "Couldn’t confirm that email. Try again.", true);
+              button.disabled = false;
+              return;
+            }
+            showOpenApp(token, created.created === true);
+          } catch (submitError) {
+            setNotice("password-notice", "Couldn’t confirm that email. Try again.", true);
+            button.disabled = false;
+          }
+        });
+        return;
+      }
+      if (!result || result.confirmed !== true) {
+        show("failed");
+        return;
+      }
+      showOpenApp(token, result.created === true);
     } catch (error) {
       show("failed");
     }

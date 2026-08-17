@@ -13,10 +13,21 @@
     <div class="mark" aria-hidden="true">LH</div>
     <h1>You’re invited</h1>
     <section id="loading" data-panel>
-      <p class="lead">Opening LittleHQ…</p>
+      <p class="lead">Confirming your email…</p>
+    </section>
+    <section id="password" data-panel class="hidden">
+      <p class="lead">Your invitation is valid. Create a password for this inbox, then open LittleHQ.</p>
+      <form id="password-form">
+        <label for="new-password">Password</label>
+        <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
+        <p id="password-notice" class="notice hidden"></p>
+        <button id="password-submit" type="submit">Confirm email</button>
+      </form>
     </section>
     <section id="ready" data-panel class="hidden">
-      <p class="lead" id="ready-lead">This invitation is for the inbox it was sent to. Open LittleHQ to continue. You won’t need to type a code.</p>
+      <p class="lead" id="ready-lead">Your email is confirmed. Open LittleHQ and sign in with this inbox.</p>
       <a class="button" id="open-app" href="#">Open LittleHQ</a>
     </section>
     <section id="failed" data-panel class="hidden">
