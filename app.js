@@ -213,7 +213,7 @@
 
   function isValidInviteToken(value) {
     const token = normalizedInviteToken(value);
-    return token.length >= 8 && token.length <= 256 && /^[a-z0-9._~-]+$/.test(token);
+    return token.length >= 16 && token.length <= 256 && /^[a-z0-9._~-]+$/.test(token);
   }
 
   function appInviteURL(token) {
