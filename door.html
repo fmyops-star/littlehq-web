@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; connect-src https://*.supabase.co; img-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <title>Door check-in · LittleHQ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <div class="mark" aria-hidden="true">LH</div>
+    <h1>Door check-in</h1>
+
+    <section id="loading" data-panel>
+      <p class="lead">Recording attendance…</p>
+    </section>
+
+    <section id="expired" data-panel class="hidden">
+      <p class="lead">This QR is missing or no longer valid. Scan the door poster at the school.</p>
+    </section>
+
+    <section id="identify" data-panel class="hidden">
+      <p class="lead">Sign in with your LittleHQ email, or enter the door code from the Director. Then attendance is recorded automatically.</p>
+      <div id="identify-notice" class="notice hidden"></div>
+      <form id="signin-form">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required minlength="8">
+        <button type="submit" id="signin-submit">Sign in</button>
+      </form>
+      <p class="or-divider">or</p>
+      <form id="code-form">
+        <label for="door-code">Door code</label>
+        <input id="door-code" name="code" type="text" inputmode="text" autocomplete="one-time-code" maxlength="12" spellcheck="false">
+        <p class="hint">8 characters from the Director. Spaces are OK.</p>
+        <button type="submit" id="code-submit">Continue with door code</button>
+      </form>
+    </section>
+
+    <section id="done" data-panel class="hidden">
+      <p class="lead" id="done-lead">Attendance is updated.</p>
+      <div id="done-list"></div>
+      <button type="button" id="signout" class="secondary hidden">Use a different account</button>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script src="door.js"></script>
+</body>
+</html>

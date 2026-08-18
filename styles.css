@@ -163,3 +163,44 @@ main.legal li { margin-bottom: 6px; }
   font-weight: 600;
   text-decoration: none;
 }
+
+.or-divider {
+  text-align: center;
+  margin: 8px 0 20px;
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+button.secondary {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.child-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.child-name {
+  margin: 0 0 4px;
+  color: var(--ink);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.child-status {
+  margin: 0 0 12px;
+  color: var(--ink-secondary);
+}
+
+.row-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.row-actions button {
+  margin: 0;
+}
