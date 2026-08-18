@@ -1,6 +1,7 @@
 (function () {
   const tokenPattern = /^[0-9a-f]{32}$/;
-  const codePattern = /^[0-9a-f]{8}$/;
+  const shortCodePattern = /^[2-9a-hj-km-np-z]{6}$/;
+  const legacyCodePattern = /^[0-9a-f]{8}$/;
   const doorCodeKey = "littlehq.doorCode";
 
   function config() {
@@ -44,7 +45,11 @@
   }
 
   function normalizeCode(value) {
-    return String(value || "").toLowerCase().replace(/[^0-9a-f]/g, "");
+    return String(value || "").toLowerCase().replace(/[^0-9a-z]/g, "");
+  }
+
+  function isDoorCode(value) {
+    return shortCodePattern.test(value) || legacyCodePattern.test(value);
   }
 
   function savedDoorCode() {
@@ -78,6 +83,9 @@
     }
     if (message === "too_soon") {
       return "Wait 30 minutes before checking out so this isn’t an accidental scan. A teacher can check them out now if they need to leave.";
+    }
+    if (message === "too_many_attempts") {
+      return "Too many tries. Wait a few minutes and enter the door code again.";
     }
     if (message === "already_recorded") {
       return "This child already has attendance for today.";
@@ -135,7 +143,7 @@
 
     const supabase = client();
     let doorCode = savedDoorCode();
-    if (!codePattern.test(doorCode)) {
+    if (!isDoorCode(doorCode)) {
       doorCode = null;
     }
 
@@ -225,8 +233,8 @@
       event.preventDefault();
       const submit = document.getElementById("code-submit");
       const code = normalizeCode(document.getElementById("door-code").value);
-      if (!codePattern.test(code)) {
-        setNotice("identify-notice", "Enter the 8-character door code from the Director.", true);
+      if (!isDoorCode(code)) {
+        setNotice("identify-notice", "Enter the 6-character door code from the Director.", true);
         return;
       }
       submit.disabled = true;
