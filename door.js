@@ -184,27 +184,41 @@
         p_door_code: doorCode
       });
       if (error) {
+        const message = String(error.message || "").toLowerCase();
         if (rpcMessage(error) === "expired") {
           showExpired();
-          return false;
+          return "expired";
         }
-        if (String(error.message || "").toLowerCase() === "not_allowed") {
+        if (message === "not_allowed") {
           if (doorCode) {
             storeDoorCode("");
             doorCode = null;
           }
-          return false;
+          return "not_allowed";
         }
         show("identify");
         setNotice("identify-notice", rpcMessage(error), true);
-        return false;
+        return message === "too_many_attempts" ? "too_many_attempts" : "failed";
       }
       const rows = Array.isArray(data) ? data : [];
+      const outcome = rows.length === 1 ? rows[0].outcome : null;
+      if (outcome === "not_allowed") {
+        if (doorCode) {
+          storeDoorCode("");
+          doorCode = null;
+        }
+        return "not_allowed";
+      }
+      if (outcome === "too_many_attempts") {
+        show("identify");
+        setNotice("identify-notice", rpcMessage({ message: outcome }), true);
+        return "too_many_attempts";
+      }
       if (rows.length === 0) {
-        return false;
+        return "failed";
       }
       renderDone(rows);
-      return true;
+      return "ok";
     }
 
     document.getElementById("signin-form").addEventListener("submit", async (event) => {
@@ -222,11 +236,15 @@
       }
       doorCode = null;
       storeDoorCode("");
-      const ok = await applyAttendance();
-      if (!ok) {
-        show("identify");
-        setNotice("identify-notice", "You don’t have children to check in here.", true);
+      const result = await applyAttendance();
+      if (result === "ok" || result === "expired") {
+        return;
       }
+      show("identify");
+      if (result === "too_many_attempts") {
+        return;
+      }
+      setNotice("identify-notice", "You don’t have children to check in here.", true);
     });
 
     document.getElementById("code-form").addEventListener("submit", async (event) => {
@@ -239,18 +257,23 @@
       }
       submit.disabled = true;
       doorCode = code;
-      const ok = await applyAttendance();
+      const result = await applyAttendance();
       submit.disabled = false;
-      if (!ok) {
-        doorCode = null;
-        storeDoorCode("");
-        if (document.getElementById("expired").classList.contains("hidden")) {
-          show("identify");
-          setNotice("identify-notice", "That door code didn’t work.", true);
-        }
+      if (result === "ok") {
+        storeDoorCode(code);
         return;
       }
-      storeDoorCode(code);
+      doorCode = null;
+      if (result === "expired") {
+        return;
+      }
+      if (result === "too_many_attempts") {
+        show("identify");
+        return;
+      }
+      storeDoorCode("");
+      show("identify");
+      setNotice("identify-notice", "That door code didn’t work.", true);
     });
 
     document.getElementById("signout").addEventListener("click", async () => {
@@ -263,9 +286,9 @@
 
     const { data } = await supabase.auth.getSession();
     if ((data && data.session) || doorCode) {
-      const ok = await applyAttendance();
-      if (ok) return;
-      if (!document.getElementById("expired").classList.contains("hidden")) return;
+      const result = await applyAttendance();
+      if (result === "ok") return;
+      if (result === "expired") return;
     }
     show("identify");
   }
