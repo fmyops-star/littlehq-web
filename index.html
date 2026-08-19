@@ -4,17 +4,342 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
-  <title>LittleHQ</title>
+  <meta name="theme-color" content="#F4F1EC">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'">
+  <title>LittleHQ — The school day, in one place</title>
+  <meta name="description" content="LittleHQ is the iPhone app for one childcare school. Directors, teachers, and parents share attendance, pickup, messages, and tuition — each person only sees what they need.">
+  <meta property="og:title" content="LittleHQ">
+  <meta property="og:description" content="The school day, in one place. Attendance, pickup, messages, and tuition for one school.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css">
 </head>
-<body>
-  <main>
-    <div class="mark" aria-hidden="true">LH</div>
-    <h1>LittleHQ</h1>
-    <p class="lead">School tools for directors, teachers, and parents. Open the LittleHQ app to sign in.</p>
-    <a class="button" href="reset.html">Reset password</a>
-    <p class="footer-link"><a href="privacy.html">Privacy Policy</a></p>
+<body class="site">
+  <a class="skip-link" href="#content" data-i18n="skip">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-wrap header-bar">
+      <a class="brand" href="#top">
+        <span class="mark brand-mark" aria-hidden="true">LH</span>
+        <span>LittleHQ</span>
+      </a>
+      <nav class="nav-desktop" aria-label="Primary">
+        <a href="#product" data-i18n="nav_product">Product</a>
+        <a href="#roles" data-i18n="nav_roles">Roles</a>
+        <a href="#how" data-i18n="nav_how">How it works</a>
+        <a href="#trust" data-i18n="nav_trust">Privacy</a>
+        <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="lang-toggle" id="lang-toggle" data-i18n="lang_switch" data-i18n-aria="lang_label">Español</button>
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-panel" data-i18n-aria="nav_open">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-panel" id="nav-panel" hidden>
+      <a href="#product" data-i18n="nav_product">Product</a>
+      <a href="#roles" data-i18n="nav_roles">Roles</a>
+      <a href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#trust" data-i18n="nav_trust">Privacy</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero" id="top">
+      <div class="site-wrap hero-grid">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow" data-i18n="hero_eyebrow">iPhone app for one school</p>
+          <h1 data-i18n="hero_title">The school day, in one place.</h1>
+          <p class="hero-lead" data-i18n="hero_lead">LittleHQ is for directors, teachers, and parents at a single childcare school. Attendance, pickup, messages, and tuition stay together — and each person only sees what they need.</p>
+          <div class="hero-actions">
+            <a class="button site-button" href="#product" data-i18n="hero_primary">See what’s included</a>
+            <a class="button site-button site-button-ghost" href="privacy.html" data-i18n="hero_secondary">Privacy Policy</a>
+          </div>
+          <p class="hero-note" data-i18n="hero_note">Sign in with email and password in the LittleHQ iPhone app. English and Español are built in.</p>
+        </div>
+
+        <div class="hero-stage" data-reveal>
+          <div class="phone" aria-hidden="true">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <p class="phone-kicker" data-i18n="preview_label">Preview</p>
+              <p class="phone-hello" data-i18n="preview_home">Home</p>
+              <div class="phone-card">
+                <div class="phone-row">
+                  <span class="phone-avatar">A</span>
+                  <div>
+                    <strong>Avery</strong>
+                    <span data-i18n="preview_present">Present</span>
+                  </div>
+                </div>
+              </div>
+              <div class="phone-card">
+                <div class="phone-row">
+                  <span class="phone-avatar">M</span>
+                  <div>
+                    <strong>Miles</strong>
+                    <span data-i18n="preview_out">Out</span>
+                  </div>
+                </div>
+              </div>
+              <div class="phone-card phone-card-soft">
+                <strong data-i18n="ribbon_billing">Tuition</strong>
+                <span data-i18n="preview_due">Due Friday</span>
+              </div>
+              <div class="phone-tabs">
+                <span class="is-on" data-i18n="preview_home">Home</span>
+                <span data-i18n="preview_messages">Messages</span>
+                <span data-i18n="ribbon_billing">Tuition</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ribbon" aria-hidden="true">
+      <div class="ribbon-track">
+        <span data-i18n="ribbon_attendance">Attendance</span>
+        <span data-i18n="ribbon_door">Door check-in</span>
+        <span data-i18n="ribbon_pickup">Authorized pickup</span>
+        <span data-i18n="ribbon_rooms">Classrooms</span>
+        <span data-i18n="ribbon_messages">Director–parent messages</span>
+        <span data-i18n="ribbon_news">Announcements</span>
+        <span data-i18n="ribbon_billing">Tuition</span>
+        <span data-i18n="ribbon_people">Invitations</span>
+        <span data-i18n="ribbon_export">Attendance export</span>
+        <span data-i18n="ribbon_lang">English / Español</span>
+        <span data-i18n="ribbon_attendance">Attendance</span>
+        <span data-i18n="ribbon_door">Door check-in</span>
+        <span data-i18n="ribbon_pickup">Authorized pickup</span>
+        <span data-i18n="ribbon_rooms">Classrooms</span>
+        <span data-i18n="ribbon_messages">Director–parent messages</span>
+        <span data-i18n="ribbon_news">Announcements</span>
+        <span data-i18n="ribbon_billing">Tuition</span>
+        <span data-i18n="ribbon_people">Invitations</span>
+        <span data-i18n="ribbon_export">Attendance export</span>
+        <span data-i18n="ribbon_lang">English / Español</span>
+      </div>
+    </div>
+
+    <section class="section" id="product">
+      <div class="site-wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="product_eyebrow">What’s in the app</p>
+          <h2 data-i18n="product_title">Everything the school needs to run the day.</h2>
+          <p data-i18n="product_lead">One school. Three roles. No extra products to bolt on. Teachers never see billing. Parents only see their own children.</p>
+        </header>
+        <div class="bento">
+          <article class="bento-card bento-wide" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_attendance">Attendance</p>
+            <h3 data-i18n="card_attendance_title">Check-in that matches the room</h3>
+            <p data-i18n="card_attendance_body">Staff check children in and out for today. Parents see their child’s history. Directors can share a spreadsheet of who was present — names of children, not names of staff.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_door">Door check-in</p>
+            <h3 data-i18n="card_door_title">A poster at the door</h3>
+            <p data-i18n="card_door_body">Print one Door QR. A parent scans it with Camera, signs in or enters a 6-character code, and attendance records. Another scan within 30 minutes does not check them out. Staff can still check out immediately.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_pickup">Authorized pickup</p>
+            <h3 data-i18n="card_pickup_title">Who is allowed to pick up</h3>
+            <p data-i18n="card_pickup_body">Each child has authorized pickup people and how to reach them. Directors and teachers can see the list when someone arrives.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_rooms">Classrooms</p>
+            <h3 data-i18n="card_rooms_title">Classrooms and children</h3>
+            <p data-i18n="card_rooms_body">Directors add rooms, assign teachers, and keep children on the right list. Teachers can move a child to another room. They cannot change a child’s name or allergies.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_messages">Director–parent messages</p>
+            <h3 data-i18n="card_messages_title">Messages about that child</h3>
+            <p data-i18n="card_messages_body">The director and a parent write on that child’s thread. Teachers do not see those messages. Lock-screen alerts say a new message arrived — not the child’s name, and not the text.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_news">Announcements</p>
+            <h3 data-i18n="card_news_title">Announcements to the right people</h3>
+            <p data-i18n="card_news_body">Post to the whole school or one classroom. Teachers and parents see what applies to them. Push alerts stay generic.</p>
+          </article>
+          <article class="bento-card" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_billing">Tuition</p>
+            <h3 data-i18n="card_billing_title">Tuition on the books</h3>
+            <p data-i18n="card_billing_body">Directors create charges and record cash, check, or Zelle. Parents see what they owe and can pay by card in the app when card payments are connected. Teachers never see billing.</p>
+          </article>
+          <article class="bento-card bento-wide" data-reveal>
+            <p class="card-kicker" data-i18n="ribbon_people">Invitations</p>
+            <h3 data-i18n="card_people_title">Invite the right adults</h3>
+            <p data-i18n="card_people_body">Directors send teacher and parent invitations by email. A parent invite is tied to a child. Codes can be replaced or revoked. Nobody creates a child login.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="roles">
+      <div class="site-wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="roles_eyebrow">Three roles</p>
+          <h2 data-i18n="roles_title">The same school. Different doors.</h2>
+          <p data-i18n="roles_lead">LittleHQ does not show director names to teachers or parents. Role labels are enough.</p>
+        </header>
+        <div class="role-tabs" role="tablist" aria-label="Roles">
+          <button type="button" role="tab" aria-selected="true" class="is-active" data-role-tab="director" data-i18n="role_director">Director</button>
+          <button type="button" role="tab" aria-selected="false" data-role-tab="teacher" data-i18n="role_teacher">Teacher</button>
+          <button type="button" role="tab" aria-selected="false" data-role-tab="parent" data-i18n="role_parent">Parent</button>
+        </div>
+        <div class="role-panel" data-role-panel="director">
+          <p data-i18n="role_director_body">Runs the school: settings, people, invitations, children, classrooms, attendance, Door QR, attendance export, pickup, announcements, messages, charges, and payments received outside the app.</p>
+        </div>
+        <div class="role-panel" data-role-panel="teacher" hidden>
+          <p data-i18n="role_teacher_body">Sees assigned classrooms, attendance, pickup, announcements, and school info. Checks children in and out. No messaging. No billing. Cannot edit a child’s name or allergies.</p>
+        </div>
+        <div class="role-panel" data-role-panel="parent" hidden>
+          <p data-i18n="role_parent_body">Sees linked children, attendance history, pickup, announcements, messages with the director, and their own charges. Can check in at the door poster. Can leave the school or delete their LittleHQ account.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="site-wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="how_eyebrow">How it works</p>
+          <h2 data-i18n="how_title">Set up once. Use it every morning.</h2>
+        </header>
+        <ol class="steps">
+          <li data-reveal>
+            <span>1</span>
+            <h3 data-i18n="how_1_title">The director opens the school</h3>
+            <p data-i18n="how_1_body">Create the school, add classrooms and children, then invite teachers and parents.</p>
+          </li>
+          <li data-reveal>
+            <span>2</span>
+            <h3 data-i18n="how_2_title">Adults join with an invitation</h3>
+            <p data-i18n="how_2_body">They confirm the invited inbox, create a password, and open LittleHQ on iPhone. Email and password only.</p>
+          </li>
+          <li data-reveal>
+            <span>3</span>
+            <h3 data-i18n="how_3_title">The day is recorded where it happens</h3>
+            <p data-i18n="how_3_body">Classroom check-in, the door poster, pickup lists, and announcements stay on that day’s record.</p>
+          </li>
+          <li data-reveal>
+            <span>4</span>
+            <h3 data-i18n="how_4_title">Families stay current</h3>
+            <p data-i18n="how_4_body">Parents see attendance, messages, and charges. Directors keep the books and the roster.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="trust">
+      <div class="site-wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="trust_eyebrow">Built to stay small</p>
+          <h2 data-i18n="trust_title">Each person sees their slice. We don’t sell the rest.</h2>
+          <p data-i18n="trust_lead">LittleHQ stores school records so the school can operate safely. We do not sell this information. We do not use it for ads.</p>
+        </header>
+        <div class="trust-grid">
+          <article data-reveal>
+            <h3 data-i18n="trust_1_title">Role limits</h3>
+            <p data-i18n="trust_1_body">Teachers cannot open billing or director–parent threads. Parents cannot see another family’s child.</p>
+          </article>
+          <article data-reveal>
+            <h3 data-i18n="trust_2_title">Your login</h3>
+            <p data-i18n="trust_2_body">Email and password. You can delete your LittleHQ account from the app by typing DELETE.</p>
+          </article>
+          <article data-reveal>
+            <h3 data-i18n="trust_3_title">School history stays</h3>
+            <p data-i18n="trust_3_body">Leaving or deleting a login does not erase the school’s shared records. Children’s names, attendance, and payments stay with the school.</p>
+          </article>
+          <article data-reveal>
+            <h3 data-i18n="trust_4_title">Plain-language privacy</h3>
+            <p data-i18n="trust_4_body">The Privacy Policy matches what the app stores today. It is not legal advice.</p>
+          </article>
+        </div>
+        <p class="section-link"><a href="privacy.html" data-i18n="trust_privacy">Read the Privacy Policy</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="site-wrap faq-wrap">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="faq_eyebrow">Questions</p>
+          <h2 data-i18n="faq_title">Straight answers.</h2>
+        </header>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_1_q">Do children get LittleHQ accounts?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_1_a">No. Only adults sign in: the director, teachers, and parents or guardians. A director or parent enters a child’s information so the school can run the day.</p></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_2_q">Can I download LittleHQ from the App Store today?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_2_a">LittleHQ is an iPhone app. Public App Store listing comes later. People at a school that already uses LittleHQ sign in with the email the director invited.</p></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_3_q">How do parents check a child in?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_3_a">Staff can check in from the classroom. Parents can also scan the school’s Door QR with Camera, then sign in or enter a 6-character door code. A second parent scan within 30 minutes does not check the child out.</p></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_4_q">How do families pay tuition?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_4_a">The director creates a charge. They can record cash, check, or Zelle. Parents see what they owe in Billing. Card checkout in the app is used when the school has card payments connected.</p></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_5_q">Is there Spanish?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_5_a">Yes. Directors, teachers, and parents can switch English and Español in Account.</p></div>
+          </div>
+          <div class="faq-item">
+            <h3><button type="button" aria-expanded="false" data-i18n="faq_6_q">Who do I contact?</button></h3>
+            <div class="faq-answer" hidden><p data-i18n="faq_6_a">For your school’s records, message the director in LittleHQ. This website is also linked from Sign in and Account in the app.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" id="get-started">
+      <div class="site-wrap close-card" data-reveal>
+        <h2 data-i18n="close_title">Open LittleHQ on iPhone.</h2>
+        <p data-i18n="close_lead">If you already have an invitation, confirm your email and sign in. If you need a reset, use the same inbox the school has on file.</p>
+        <div class="hero-actions">
+          <a class="button site-button" href="reset.html" data-i18n="close_primary">Reset password</a>
+          <a class="button site-button site-button-ghost" href="privacy.html" data-i18n="close_secondary">Privacy Policy</a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-wrap footer-grid">
+      <div>
+        <a class="brand footer-brand" href="#top">
+          <span class="mark brand-mark" aria-hidden="true">LH</span>
+          <span>LittleHQ</span>
+        </a>
+        <p data-i18n="footer_blurb">School tools for directors, teachers, and parents. LittleHQ is a placeholder product name, operated by Evernourish Brands.</p>
+      </div>
+      <div>
+        <p class="footer-label" data-i18n="footer_product">Product</p>
+        <a href="#product" data-i18n="nav_product">Product</a>
+        <a href="#roles" data-i18n="nav_roles">Roles</a>
+        <a href="#how" data-i18n="nav_how">How it works</a>
+        <a href="door.html" data-i18n="footer_door">Door check-in</a>
+      </div>
+      <div>
+        <p class="footer-label" data-i18n="footer_account">Account</p>
+        <a href="reset.html" data-i18n="footer_reset">Reset password</a>
+        <a href="invite.html" data-i18n="footer_invite">Invitation</a>
+        <a href="confirmed.html" data-i18n="footer_confirm">Email confirmed</a>
+      </div>
+      <div>
+        <p class="footer-label" data-i18n="footer_legal">Legal</p>
+        <a href="privacy.html" data-i18n="footer_privacy">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="site-wrap footer-end">
+      <p><span data-i18n="footer_copy">LittleHQ</span> · Evernourish Brands</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
 </body>
 </html>

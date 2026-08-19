@@ -1,3 +1,3 @@
-# LittleHQ auth pages
+# LittleHQ website
 
-Static pages for email confirmation, password reset, invitation links, and door check-in. Opened from LittleHQ emails or a staff Door QR.
+Marketing homepage plus static pages for email confirmation, password reset, invitation links, and door check-in.
