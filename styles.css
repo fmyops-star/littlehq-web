@@ -137,6 +137,12 @@ main.legal ul {
 
 main.legal li { margin-bottom: 6px; }
 
+main.legal a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .legal-nav {
   margin: 0 0 20px;
 }
